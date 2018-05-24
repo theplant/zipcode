@@ -17,7 +17,7 @@ curl -o "$TMP_DIR/$DOWNLOAD_FILE" "http://www.post.japanpost.jp/zipcode/dl/roman
 unzip "$TMP_DIR/$DOWNLOAD_FILE" -d "$TMP_DIR"
 
 SOURCE_FILE="$TMP_DIR/KEN_ALL_ROME.CSV"
-TARGET_DIR="$WORK_DIR/www/zipcode"
+TARGET_DIR="$WORK_DIR/zipcode"
 
 ## Init target dir
 rm -rf "$TARGET_DIR"

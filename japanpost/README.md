@@ -2,7 +2,7 @@
 
 http://www.post.japanpost.jp/zipcode/download.html
 
-## Generate www/zipcode/*.json files
+## Generate ../zipcode/*.json files
 
 ```
 ./gen.sh

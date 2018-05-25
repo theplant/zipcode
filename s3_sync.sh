@@ -1,6 +1,12 @@
 #!/bin/bash
 
-echo $BUCKET
+if [[ $BUCKET = "" || $COUNTRY = "" ]]; then
+    echo "both of BUCKET and COUNTRY are required"
+    echo "example: BUCKET=zipcode.domain.com COUNTRY=jp ./s3_sync.sh"
+    exit 1
+fi;
 
-aws s3 sync zipcode/ s3://$BUCKET/zipcode/ --exclude "*" --include "*.json"
+echo "BUCKET $BUCKET"
+echo "COUNTRY $COUNTRY"
 
+aws s3 sync $COUNTRY/ s3://$BUCKET/$COUNTRY/ --exclude "*" --include "*.json"

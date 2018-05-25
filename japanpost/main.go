@@ -21,7 +21,7 @@ var sourceFile = flag.String(
 
 var targetDir = flag.String(
 	"target-dir",
-	"zipcode",
+	"jp",
 	"store generated json files",
 )
 

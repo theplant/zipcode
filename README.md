@@ -1,15 +1,19 @@
-# Find Japan Address By Zipcode
+# Find Address By Zipcode
 
-## Update `zipcode/*.json` files
+## Update `COUNTRY/*.json` files
 
 ```
-./update.sh
+COUNTRY=jp ./update.sh
 ```
 
-## Sync `zipcode/*.json` files to S3
+## Sync `COUNTRY/*.json` files to S3
 
 ```
 aws configure
 
-BUCKET=zipcode ./s3_sync.sh
+BUCKET=zipcode.domain.com COUNTRY=jp ./s3_sync.sh
 ```
+
+## Country code
+
+https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements

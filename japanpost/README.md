@@ -1,3 +1,6 @@
+## Download source file
+
+http://www.post.japanpost.jp/zipcode/download.html
 
 ## Generate www/zipcode/*.json files
 

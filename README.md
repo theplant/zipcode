@@ -1,5 +1,13 @@
 # Find Address By Zipcode
 
+## Use our service
+
+```
+curl -X GET http://zipcode.theplant-dev.com/jp/7860056.json
+
+{"prefecture":"高知県","city":"高岡郡　四万十町","town":"志和"}
+```
+
 ## Update `COUNTRY/*.json` files
 
 ```

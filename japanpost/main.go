@@ -9,6 +9,8 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
+	"unicode"
 
 	"golang.org/x/text/encoding/japanese"
 )
@@ -77,6 +79,27 @@ func main() {
 		if err != nil {
 			panic(fmt.Sprintf("rowNum: %v, colNum: %v decode with err %v", rowNum, 3, err))
 		}
+
+		var removeSpace = func(s string) string {
+			return strings.Map(func(o rune) rune {
+				if unicode.IsSpace(o) {
+					return -1
+				}
+
+				return o
+			}, s)
+		}
+
+		// https://github.com/theplant/zipcode/issues/2
+		addr.City = removeSpace(addr.City)
+
+		// https://github.com/theplant/zipcode/issues/1
+		if addr.Town == "以下に掲載がない場合" {
+			addr.Town = ""
+		}
+
+		// https://github.com/theplant/zipcode/issues/2
+		addr.Town = removeSpace(addr.Town)
 
 		data, err := json.Marshal(addr)
 		if err != nil {

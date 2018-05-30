@@ -1,5 +1,7 @@
 # Find Address By Zipcode
 
+[![Build Status](https://semaphoreci.com/api/v1/theplant/zipcode/branches/master/badge.svg)](https://semaphoreci.com/theplant/zipcode)
+
 ## Use our service
 
 ```

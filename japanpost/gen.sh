@@ -11,7 +11,7 @@ mkdir -p "$TMP_DIR"
 
 ## Download ken_all_rome.zip
 DOWNLOAD_FILE="ken_all_rome.zip"
-curl -o "$TMP_DIR/$DOWNLOAD_FILE" "http://www.post.japanpost.jp/zipcode/dl/roman/$DOWNLOAD_FILE"
+curl -fsSL -o "$TMP_DIR/$DOWNLOAD_FILE" "http://www.post.japanpost.jp/zipcode/dl/roman/$DOWNLOAD_FILE"
 
 ## unzip ken_all_rome.zip
 unzip "$TMP_DIR/$DOWNLOAD_FILE" -d "$TMP_DIR"

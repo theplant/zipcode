@@ -98,6 +98,9 @@ func main() {
 			addr.Town = ""
 		}
 
+		// remove （１～４丁目）
+		addr.Town = strings.Split(addr.Town, "（")[0]
+
 		// https://github.com/theplant/zipcode/issues/2
 		addr.Town = removeSpace(addr.Town)
 

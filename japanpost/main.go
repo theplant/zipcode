@@ -41,6 +41,16 @@ type Address struct {
 	Town       string `json:"town"`
 }
 
+var manualFixTowns = []string{
+	"野々宿",
+	"下左草",
+	"小繋沢",
+	"湯之沢",
+	"槻沢",
+	"湯田",
+	"種市",
+}
+
 func main() {
 	flag.Parse()
 
@@ -100,6 +110,21 @@ func main() {
 
 		// remove （１～４丁目）
 		addr.Town = strings.Split(addr.Town, "（")[0]
+
+		// fix things like 種市第１地割～第３地割, 下左草７７地割～下左草８０地割, ２２５７－２８、２３１６～２３１８, －４、５４０７－５、５４４５～５４
+		if strings.Index(addr.Town, "～") > 0 || strings.Index(addr.Town, "－") > 0 {
+			fixed := false
+			for _, prefix := range manualFixTowns {
+				if strings.Index(addr.Town, prefix) == 0 {
+					addr.Town = prefix
+					fixed = true
+					break
+				}
+			}
+			if !fixed {
+				addr.Town = ""
+			}
+		}
 
 		// https://github.com/theplant/zipcode/issues/2
 		addr.Town = removeSpace(addr.Town)

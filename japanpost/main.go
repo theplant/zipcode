@@ -129,12 +129,26 @@ func main() {
 		// https://github.com/theplant/zipcode/issues/2
 		addr.Town = removeSpace(addr.Town)
 
-		data, err := json.Marshal(addr)
+		fileName := filepath.Join(*targetDir, record[0]+".json")
+
+		oldaddr := &Address{}
+		data, err := ioutil.ReadFile(fileName)
+		if err == nil {
+			err = json.Unmarshal(data, oldaddr)
+		}
+		if oldaddr.Prefecture == addr.Prefecture &&
+			oldaddr.City == addr.City && oldaddr.Town == addr.Town {
+			if *verbose {
+				fmt.Printf("%s not changed\n", fileName)
+			}
+			continue
+		}
+
+		data, err = json.Marshal(addr)
 		if err != nil {
 			panic(fmt.Sprintf("rowNum: %v marshal json with err %v", rowNum, err))
 		}
 
-		fileName := filepath.Join(*targetDir, record[0]+".json")
 		err = ioutil.WriteFile(
 			fileName,
 			data,

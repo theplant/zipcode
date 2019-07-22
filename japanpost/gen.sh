@@ -20,7 +20,8 @@ SOURCE_FILE="$TMP_DIR/KEN_ALL_ROME.CSV"
 TARGET_DIR="$WORK_DIR/jp"
 
 ## Init target dir
-rm -rf "$TARGET_DIR"
-mkdir -p "$TARGET_DIR"
+rm -rf "$TARGET_DIR" && tar -xzvf $WORK_DIR/jp.tar.gz -C $WORK_DIR
 
 $WORK_DIR/japanpost/processor --source-file=$SOURCE_FILE --target-dir=$TARGET_DIR --verbose=true
+
+tar -czf $WORK_DIR/jp.tar.gz $WORK_DIR/jp

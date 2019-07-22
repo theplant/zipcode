@@ -9,4 +9,4 @@ fi;
 echo "BUCKET $BUCKET"
 echo "COUNTRY $COUNTRY"
 
-tar -xzf ./jp.tar.gz && aws s3 sync $COUNTRY/ s3://$BUCKET/$COUNTRY/ --exclude "*" --include "*.json"
+tar -xzf ./$COUNTRY.tar.gz && aws s3 sync $COUNTRY/ s3://$BUCKET/$COUNTRY/ --exclude "*" --include "*.json"

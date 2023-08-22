@@ -1,11 +1,9 @@
 on:
   push:
     branches:
-      - sre-3458 # for test
       - master
     paths:
-      #- 'jp.tar.gz'
-      - '**' # for test
+      - 'jp.tar.gz'
 
 name: S3 Sync
 

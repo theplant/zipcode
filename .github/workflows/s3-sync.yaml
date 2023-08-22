@@ -5,7 +5,7 @@ on:
       - master
     paths:
       #- 'jp.tar.gz'
-      - '*' # for test
+      - '**' # for test
 
 name: S3 Sync
 

@@ -1,0 +1,35 @@
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'jp.tar.gz'
+
+name: S3 Sync
+
+jobs:
+  upload-assets:
+    name: S3 Sync
+    runs-on: ubuntu-latest
+    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure AWS Credentials
+      id: get-aws-credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-region: ap-northeast-1
+        role-duration-seconds: 3600
+        role-to-assume: arn:aws:iam::562055475000:role/zipcode-github-actions-upload-s3
+
+    - name: Sync S3
+      id: sync-s3
+      shell: bash
+      run: |
+        BUCKET=zipcode.theplant-dev.com COUNTRY=jp ./s3_sync.sh

@@ -19,7 +19,7 @@ else
     exit 1
 fi;
 
-if [[ $(git add $COUNTRY/ -v | wc -l) -gt 0 ]]; then
+if [[ $(git add $COUNTRY/ $COUNTRY.tar.gz -v | wc -l) -gt 0 ]]; then
     DATE="$(date +"%Y-%m-%d")"
     git checkout -b "update-$COUNTRY-zipcode-on-$DATE"
     git commit -m "zipcode: update $COUNTRY on $DATE"

@@ -1,0 +1,59 @@
+name: Update JP zipcode data
+
+# Regenerates jp/*.json and jp.tar.gz from Japan Post's KEN_ALL_ROME dataset.
+# Runs on demand and monthly (Japan Post publishes updates near month end).
+# When the data changes it opens a PR; merging it triggers the "S3 Sync"
+# workflow, which publishes the new files to S3.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 5 * *' # 05th of every month, 00:00 UTC
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  regenerate:
+    name: Regenerate from Japan Post
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: japanpost/go.mod
+
+      - name: Regenerate data
+        # gen.sh downloads KEN_ALL_ROME, builds the processor for this runner,
+        # regenerates jp/*.json and repacks jp.tar.gz.
+        run: ./japanpost/gen.sh
+
+      - name: Open a PR if the data changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Only the data artifacts are committed; the rebuilt processor binary
+          # is host-specific and intentionally left out of the commit.
+          if [ -z "$(git status --porcelain jp jp.tar.gz)" ]; then
+            echo "No changes from Japan Post; nothing to update."
+            exit 0
+          fi
+
+          DATE="$(date +%Y-%m-%d)"
+          BRANCH="update-jp-zipcode-on-$DATE"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$BRANCH"
+          git add jp jp.tar.gz
+          git commit -m "zipcode: update jp on $DATE"
+          git push --force-with-lease origin "$BRANCH"
+
+          gh pr create \
+            --base master \
+            --head "$BRANCH" \
+            --title "zipcode: update jp on $DATE" \
+            --body "Automated refresh of Japan Post postal-code data (KEN_ALL_ROME). Merging this triggers the **S3 Sync** workflow to publish the updated \`jp/*.json\`."

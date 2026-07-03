@@ -33,4 +33,7 @@ rm -rf "$TARGET_DIR" && tar -xzf "$WORK_DIR/jp.tar.gz" -C "$WORK_DIR"
 
 ## Pack with a relative path so the archive stays rooted at jp/ (s3_sync.sh
 ## extracts it and runs `aws s3 sync jp/`, which needs a top-level jp/ entry).
-tar -C "$WORK_DIR" -czf "$WORK_DIR/jp.tar.gz" jp
+## COPYFILE_DISABLE=1 stops macOS tar from adding AppleDouble (._*) members and
+## xattr headers; otherwise GNU tar on Linux extracts the ._* files and they get
+## synced to S3 as junk (doubling the upload).
+COPYFILE_DISABLE=1 tar -C "$WORK_DIR" -czf "$WORK_DIR/jp.tar.gz" jp
